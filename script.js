@@ -7,9 +7,9 @@ const contenedor = document.getElementById('contenedor-resultados')
 const botonBuscar = document.getElementById("botonBuscar")
 const inputRaza = document.getElementById("inputRaza")
 
-const render = () => {
-    limpiarPerritos();
-    buscarPerritos(inputRaza.value);
+const render = async () => {
+    contenedor.innerHTML = ''
+    await buscarPerritos(inputRaza.value);
         estado.fotos.forEach(urlFoto => {
         const img = document.createElement('img');
         img.src = urlFoto;
@@ -17,14 +17,19 @@ const render = () => {
     });
 }
 
-const buscarPerritos = (raza) => {
-    estado.raza = raza; // Guardamos el texto directo en el estado
+async function buscarPerritos(raza) {
+  const url = `https://dog.ceo/api/breed/${raza.toLowerCase().trim()}/images/random`;
+
+  try {
+    const respuesta = await fetch(url);
+    const datos = await respuesta.json(); // no se va a ejecutar esta linea hasta que haya terminado la anterior
     
-    estado.fotos = [
-        'https://images.dog.ceo/breeds/retriever-golden/n02099601_2440.jpg',
-        'https://images.dog.ceo/breeds/retriever-golden/n02099601_4312.jpg',
-        'https://images.dog.ceo/breeds/retriever-golden/n02099601_4651.jpg'
-    ];
+    const urlFoto = datos.message;
+    estado.fotos.push(urlFoto);
+    
+  } catch (error) {
+    console.error("No se pudo obtener la foto");
+  }
 }
 
 const limpiarPerritos = () => {
@@ -33,3 +38,4 @@ const limpiarPerritos = () => {
 }
 
 botonBuscar.addEventListener("click", render)
+botonLimpiar.addEventListener("click", limpiarPerritos)
