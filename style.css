@@ -40,3 +40,58 @@ img{
     border-width: 0.7em;
     border-color: rgb(34, 200, 200);
 }
+
+/* ======  BARRA DE CARGA  ====== */
+
+#loader-contenedor {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 40px auto;
+  width: 100%;
+  max-width: 350px; /* Ancho máximo de la barra */
+  font-family: sans-serif;
+}
+
+.barra-progreso-bg {
+  width: 100%;
+  height: 8px;
+  background-color: #e0e0e0;
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+
+.barra-progreso-llenado {
+  height: 100%;
+  width: 40%; 
+  background-color: #2ecc71; 
+  border-radius: 4px;
+  position: absolute;
+  animation: cargar-infinito 1.5s infinite ease-in-out;
+}
+
+.texto-cargando {
+  margin-top: 12px;
+  font-size: 14px;
+  color: #27ae60;
+  font-weight: bold;
+}
+
+.oculto {
+  display: none !important;
+}
+
+/* Animación que mueve la barra verde de izquierda a derecha */
+@keyframes cargar-infinito {
+  0% {
+    left: -40%;
+  }
+  50% {
+    width: 60%; /* Se estira un poquito en el medio para verse más orgánica */
+  }
+  100% {
+    left: 100%;
+  }
+}

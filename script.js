@@ -6,6 +6,7 @@ const estado = {
 const contenedor = document.getElementById('contenedor-resultados')
 const botonBuscar = document.getElementById("botonBuscar")
 const inputRaza = document.getElementById("inputRaza")
+const loader = document.getElementById('loader-contenedor');
 
 const render = async () => { //es async porque requiere de buscarPerritos que es async
   await buscarPerritos(inputRaza.value)
@@ -21,6 +22,7 @@ async function buscarPerritos(raza) {
   limpiarContenedor();
   estado.fotos.splice(0) //elimina todas las fotos - es como asignar [] pero con mayor lentitud y sin descuidar la memoria (imaginando que js no tiene un garbagecollector...)
   const url = `https://dog.ceo/api/breed/${raza.toLowerCase().trim()}/images/random/8`
+  loader.classList.remove('oculto'); //hace aparecer la barra de carga
 
   try {
     const respuesta = await fetch(url)
@@ -34,6 +36,8 @@ async function buscarPerritos(raza) {
     err.className = 'mensajeError'
     err.textContent = 'No se han podido obtener fotos'
     contenedor.appendChild(err)
+  } finally { //Se ejecuta al final si o si independientemente del resultado
+    loader.classList.add('oculto');
   }
 }
 
