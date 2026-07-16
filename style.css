@@ -1,10 +1,28 @@
+#contenedor-principal{
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 #tituloPag{
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-weight: bold;
+    font-size: 2.5em;
+}
+#contenedor-buscador{
+    padding: 0.2em;
+    border-width: 0.2em;
+    border-style: solid;
+    border-color: black;
 }
 button{
+    font-size: 1.3em;
     color:navy;
     background-color: chocolate;
+}
+input{
+    font-size: 1.3em;
+    margin: 0.2em;
 }
 img{
     margin: 1%;
