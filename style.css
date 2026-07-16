@@ -1,4 +1,4 @@
-#TituloPag{
+#tituloPag{
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-weight: bold;
 }
@@ -7,5 +7,18 @@ button{
     background-color: chocolate;
 }
 img{
-    padding: 1%;
+    margin: 1%;
+    width: 20em;
+    height: 20em;
+}
+.mensajeError{
+    color: crimson;
+    font-weight: bolder;
+    font-size: larger;
+}
+.fotoPerro{
+    padding: 0em;
+    border-style:double;
+    border-width: 0.7em;
+    border-color: rgb(34, 200, 200);
 }
