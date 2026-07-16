@@ -7,48 +7,14 @@ const contenedor = document.getElementById('contenedor-resultados')
 const botonBuscar = document.getElementById("botonBuscar")
 const inputRaza = document.getElementById("inputRaza")
 
-const render = () => {
-  buscarPerritos(inputRaza.value)
-    .then(() => {
-      estado.fotos.forEach(urlFoto => {
-        const img = document.createElement('img')
-        img.src = urlFoto
-        img.className = 'fotoPerro'
-        contenedor.appendChild(img)
-      });
-    }).catch(error => {
-        console.error("Ocurrió un error al mostrar las fotos", error)
-        const err = document.createElement('p')
-        err.className = 'mensajeError'
-        err.textContent = "Ocurrió un error al mostrar las fotos"
-        contenedor.appendChild(err)
-      });
-}
-
-function buscarPerritos(raza) {
-  limpiarContenedor()
-  estado.fotos.splice(0)
-  const url = `https://dog.ceo/api/breed/${raza.toLowerCase().trim()}/images/random/8`
-  const promesaBusqueda = new Promise((resolve, reject) => {
-    fetch(url) //fetch es asincronica y hace una peticion HTTP (en este caso GET). Devuelve una promesa que al resolverse, devuelve un objeto response (web)
-      .then(respuesta => respuesta.ok ? respuesta.json() : reject("Error en respuesta")) // "respuesta" recibe el objeto RESPONSE.
-      .then(datos => {
-        estado.fotos.push(...datos.message)
-        resolve() //todo joya - se manda OK
-      })
-      .catch(error => {reject(error)}) //murió - se manda ERROR
+const render = async () => { //es async porque requiere de buscarPerritos que es async
+  await buscarPerritos(inputRaza.value)
+  estado.fotos.forEach(urlFoto => {
+    const img = document.createElement('img')
+    img.src = urlFoto
+    img.className = 'fotoPerro'
+    contenedor.appendChild(img)
   });
-  return promesaBusqueda;
-};
-/*
-const render = async () => {
-    await buscarPerritos(inputRaza.value)
-        estado.fotos.forEach(urlFoto => {
-        const img = document.createElement('img')
-        img.src = urlFoto
-        img.className = 'fotoPerro'
-        contenedor.appendChild(img)
-    });
 }
 
 async function buscarPerritos(raza) {
@@ -58,11 +24,10 @@ async function buscarPerritos(raza) {
 
   try {
     const respuesta = await fetch(url)
-    const datos = await respuesta.json() // no se va a ejecutar esta linea hasta que haya terminado la anterior
-    
-    const urlFoto = datos.message
-    estado.fotos.push(...urlFoto)
-    
+    const datos = await respuesta.json() // no se va a ejecutar esta linea hasta que haya terminado la anterior "concatenación de awaits"
+    const urlFotos = datos.message //datos es un json {message:array[8], status:success}
+    estado.fotos.push(...urlFotos) // ... "spread operator" - desparrama ese array[8] correctamente
+    await new Promise(resolve => setTimeout(resolve, 2000));
   } catch (error) {
     console.error("No se han podido obtener fotos")
     const err = document.createElement('p')
@@ -71,7 +36,6 @@ async function buscarPerritos(raza) {
     contenedor.appendChild(err)
   }
 }
-*/
 
 const limpiarContenedor = () => {
     contenedor.innerHTML = ''
